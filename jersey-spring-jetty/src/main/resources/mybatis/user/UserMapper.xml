@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhaochao.mapper.UserMapper">
+	<cache readOnly="true" eviction="FIFO" flushInterval="60000" />
+	<!-- Result Map -->
+	<resultMap id="BaseResultMap" type="com.zhaochao.bean.User">
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="password" property="password" />
+	</resultMap>
+
+	<!-- user table all fields -->
+	<sql id="Base_Column_List">
+		id,name,age,password
+	</sql>
+
+
+	<!-- 查询条件 -->
+	<sql id="Example_Where_Clause">
+		where 1=1
+		<trim suffixOverrides=",">
+			<if test="id != null">
+				and id = #{id}
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 插入记录 -->
+	<insert id="add" parameterType="Object">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into user(id,token,system_name,create_time,status)
+		values(#{id},#{token},#{systemName},now(),#{status})
+	</insert>
+
+	<!-- 根据id，修改记录 -->
+	<update id="update" parameterType="Object">
+		update user set
+		token=#{token},system_name=#{systemName},status=#{status} where
+		id=#{id}
+	</update>
+
+	<!-- 修改记录，只修改只不为空的字段 -->
+	<update id="updateBySelective" parameterType="Object">
+		update user set
+		<trim suffixOverrides=",">
+			<if test="token != null  and token != '' ">
+				name=#{name},
+			</if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Object">
+		delete from user where
+		id = #{id}
+	</delete>
+
+	<!-- 根据id查询 系统认证token -->
+	<select id="queryById" resultMap="BaseResultMap" parameterType="Object">
+		select
+		<include refid="Base_Column_List" />
+		from user where id = #{id}
+	</select>
+
+	<!-- 系统认证token 列表总数 -->
+	<select id="queryByCount" resultType="java.lang.Integer"
+		parameterType="Object">
+		select count(1) from user
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<!-- 查询系统认证token列表 -->
+	<select id="queryByList" resultMap="BaseResultMap"
+		parameterType="Object" useCache="true">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		<include refid="Example_Where_Clause" />
+		<if test="pager.orderCondition != null and pager.orderCondition != ''">
+			${pager.orderCondition}
+		</if>
+		<if
+			test="pager.mysqlQueryCondition != null and pager.mysqlQueryCondition != ''">
+			${pager.mysqlQueryCondition}
+		</if>
+	</select>
+
+</mapper>   

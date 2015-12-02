@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- 开发时输出控制台 上线后取消-->
+	<appender name="LOG.CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+		<!--限制输出级别 -->
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMax" value="ERROR" />
+			<param name="LevelMin" value="TRACE" />
+		</filter>
+	</appender>
+
+	<!--将级别为DEBUG的信息输出到控制台 -->
+	<appender name="LOG.DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/zjol/logs/survey/debug.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %p [%c] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="DEBUG" />
+			<param name="LevelMax" value="DEBUG" />
+		</filter>
+	</appender>
+	<!--将级别为INFO的信息输出到控制台 -->
+	<appender name="LOG.INFO" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/zjol/logs/survey/info.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %p [%c] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+			<param name="LevelMax" value="INFO" />
+		</filter>
+	</appender>
+	<!--将级别为WARN的信息输出到控制台 -->
+	<appender name="LOG.WARN" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/zjol/logs/survey/warn.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %p [%c] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="WARN" />
+			<param name="LevelMax" value="WARN" />
+		</filter>
+	</appender>
+	<!--将级别为ERROR的信息输出到控制台 -->
+	<appender name="LOG.ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/zjol/logs/survey/error.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %p [%c] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="ERROR" />
+			<param name="LevelMax" value="ERROR" />
+		</filter>
+	</appender>
+
+	<!--将级别为FATAL的信息输出到日志 -->
+	<appender name="LOG.FATAL" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/zjol/logs/survey/fatal.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %p [%c] - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="FATAL" />
+			<param name="LevelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="LOG.DEBUG" />
+		<appender-ref ref="LOG.INFO" />
+		<appender-ref ref="LOG.WARN" />
+		<appender-ref ref="LOG.ERROR" />
+		<appender-ref ref="LOG.FATAL" />
+		<!--   -->
+		<appender-ref ref="LOG.CONSOLE" />
+		
+	</root>
+
+</log4j:configuration>
