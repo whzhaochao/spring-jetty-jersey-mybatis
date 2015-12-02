@@ -36,7 +36,7 @@ Desktop>java -jar jersey-spring-jetty-1.0-SNAPSHOT.jar 80
 ## access url 
 
 ```
-http://localhost:8080/rest/hello/1
+http://localhost/rest/hello/1
 ```
 
 ## output result
